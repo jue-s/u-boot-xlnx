@@ -409,33 +409,40 @@ static int zynqmp_pinconf_set(struct udevice *dev, unsigned int pin,
 
 	switch (param) {
 	case PIN_CONFIG_SLEW_RATE:
+		printf("zynqmp_pinconf_set PIN_CONFIG_SLEW_RATE, pin %08x, arg %08x\n\r", pin, arg);
 		param = PM_PINCTRL_CONFIG_SLEW_RATE;
 		ret = zynqmp_pm_pinctrl_set_config(pin, param, arg);
 		break;
 	case PIN_CONFIG_BIAS_PULL_UP:
+		printf("zynqmp_pinconf_set PIN_CONFIG_BIAS_PULL_UP, pin %08x, arg %08x\n\r", pin, arg);
 		param = PM_PINCTRL_CONFIG_PULL_CTRL;
 		arg = PM_PINCTRL_BIAS_PULL_UP;
 		ret = zynqmp_pm_pinctrl_set_config(pin, param, arg);
 		break;
 	case PIN_CONFIG_BIAS_PULL_DOWN:
+		printf("zynqmp_pinconf_set PIN_CONFIG_BIAS_PULL_DOWN, pin %08x, arg %08x\n\r", pin, arg);
 		param = PM_PINCTRL_CONFIG_PULL_CTRL;
 		arg = PM_PINCTRL_BIAS_PULL_DOWN;
 		ret = zynqmp_pm_pinctrl_set_config(pin, param, arg);
 		break;
 	case PIN_CONFIG_BIAS_DISABLE:
+		printf("zynqmp_pinconf_set PIN_CONFIG_BIAS_DISABLE, pin %08x, arg %08x\n\r", pin, arg);
 		param = PM_PINCTRL_CONFIG_BIAS_STATUS;
 		arg = PM_PINCTRL_BIAS_DISABLE;
 		ret = zynqmp_pm_pinctrl_set_config(pin, param, arg);
 		break;
 	case PIN_CONFIG_SCHMITTCMOS:
+		printf("zynqmp_pinconf_set PIN_CONFIG_SCHMITTCMOS, pin %08x, arg %08x\n\r", pin, arg);
 		param = PM_PINCTRL_CONFIG_SCHMITT_CMOS;
 		ret = zynqmp_pm_pinctrl_set_config(pin, param, arg);
 		break;
 	case PIN_CONFIG_INPUT_SCHMITT_ENABLE:
+		printf("zynqmp_pinconf_set PIN_CONFIG_INPUT_SCHMITT_ENABLE, pin %08x, arg %08x\n\r", pin, arg);
 		param = PM_PINCTRL_CONFIG_SCHMITT_CMOS;
 		ret = zynqmp_pm_pinctrl_set_config(pin, param, arg);
 		break;
 	case PIN_CONFIG_DRIVE_STRENGTH:
+		printf("zynqmp_pinconf_set PIN_CONFIG_DRIVE_STRENGTH, pin %08x, arg %08x\n\r", pin, arg);
 		switch (arg) {
 		case DRIVE_STRENGTH_2MA:
 			value = PM_PINCTRL_DRIVE_STRENGTH_2MA;
@@ -459,6 +466,7 @@ static int zynqmp_pinconf_set(struct udevice *dev, unsigned int pin,
 		ret = zynqmp_pm_pinctrl_set_config(pin, param, value);
 		break;
 	case PIN_CFG_IOSTANDARD:
+		printf("zynqmp_pinconf_set PIN_CFG_IOSTANDARD, pin %08x, arg %08x\n\r", pin, arg);
 		param = PM_PINCTRL_CONFIG_VOLTAGE_STATUS;
 		ret = zynqmp_pm_pinctrl_get_config(pin, param, &value);
 		if (arg != value)
@@ -466,6 +474,7 @@ static int zynqmp_pinconf_set(struct udevice *dev, unsigned int pin,
 				 pin);
 		break;
 	case PIN_CONFIG_POWER_SOURCE:
+		printf("zynqmp_pinconf_set PIN_CONFIG_POWER_SOURCE, pin %08x, arg %08x\n\r", pin, arg);
 		param = PM_PINCTRL_CONFIG_VOLTAGE_STATUS;
 		ret = zynqmp_pm_pinctrl_get_config(pin, param, &value);
 		if (arg != value)
@@ -473,11 +482,13 @@ static int zynqmp_pinconf_set(struct udevice *dev, unsigned int pin,
 				 pin);
 		break;
 	case PIN_CONFIG_BIAS_HIGH_IMPEDANCE:
+		printf("zynqmp_pinconf_set PIN_CONFIG_BIAS_HIGH_IMPEDANCE, pin %08x, arg %08x\n\r", pin, arg);
 		param = PM_PINCTRL_CONFIG_TRI_STATE;
 		arg = PM_PINCTRL_TRI_STATE_ENABLE;
 		ret = zynqmp_pm_pinctrl_set_config(pin, param, arg);
 		break;
 	case PIN_CONFIG_LOW_POWER_MODE:
+		printf("zynqmp_pinconf_set PIN_CONFIG_LOW_POWER_MODE, pin %08x, arg %08x\n\r", pin, arg);
 		/*
 		 * This cases are mentioned in dts but configurable
 		 * registers are unknown. So falling through to ignore
@@ -486,11 +497,13 @@ static int zynqmp_pinconf_set(struct udevice *dev, unsigned int pin,
 		ret = 0;
 		break;
 	case PIN_CONFIG_OUTPUT_ENABLE:
+		printf("zynqmp_pinconf_set PM_PINCTRL_CONFIG_TRI_STATE, pin %08x, arg %08x\n\r", pin, arg);
 		param = PM_PINCTRL_CONFIG_TRI_STATE;
 		arg = PM_PINCTRL_TRI_STATE_DISABLE;
 		ret = zynqmp_pm_pinctrl_set_config(pin, param, arg);
 		break;
 	default:
+		printf("zynqmp_pinconf_set default, pin %08x, arg %08x\n\r", pin, arg);
 		dev_warn(dev, "unsupported configuration parameter '%u'\n",
 			 param);
 		ret = -ENOTSUPP;
