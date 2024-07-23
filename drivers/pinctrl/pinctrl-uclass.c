@@ -61,6 +61,8 @@ static int pinctrl_select_state_full(struct udevice *dev, const char *statename)
 	struct udevice *config;
 	int state, size, i, ret;
 
+	printf("pinctrl_select_state_full called with statename %c\n\r", *statename);
+
 	state = dev_read_stringlist_search(dev, "pinctrl-names", statename);
 	if (state < 0) {
 		char *end;
@@ -295,6 +297,9 @@ static int pinctrl_select_state_simple(struct udevice *dev)
 
 int pinctrl_select_state(struct udevice *dev, const char *statename)
 {
+
+	printf("pinctrl_select_state called with statename %c\n\r", *statename);
+
 	/*
 	 * Some device which is logical like mmc.blk, do not have
 	 * a valid ofnode.

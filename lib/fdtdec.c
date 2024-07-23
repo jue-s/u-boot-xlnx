@@ -1669,9 +1669,11 @@ int fdtdec_setup(void)
 	if (IS_ENABLED(CONFIG_OF_SEPARATE)) {
 		gd->fdt_blob = fdt_find_separate();
 		gd->fdt_src = FDTSRC_SEPARATE;
+		printf("Using Device Tree from separate source\n");
 	} else { /* embed dtb in ELF file for testing / development */
 		gd->fdt_blob = dtb_dt_embedded();
 		gd->fdt_src = FDTSRC_EMBED;
+		printf("Using embedded Device Tree in ELF file\n");
 	}
 
 	/* Allow the board to override the fdt address. */
@@ -1680,6 +1682,7 @@ int fdtdec_setup(void)
 		if (ret)
 			return ret;
 		gd->fdt_src = FDTSRC_BOARD;
+		printf("Using Device Tree from board setup\n");
 	}
 
 	/* Allow the early environment to override the fdt address */
@@ -1691,10 +1694,13 @@ int fdtdec_setup(void)
 			gd->fdt_blob = map_sysmem(addr, 0);
 			gd->fdt_src = FDTSRC_ENV;
 		}
+		printf("Using Device Tree from environment variable at address: 0x%lx\n", addr);
 	}
 
-	if (CONFIG_IS_ENABLED(MULTI_DTB_FIT))
+	if (CONFIG_IS_ENABLED(MULTI_DTB_FIT)){
 		setup_multi_dtb_fit();
+		printf("Using Device Tree from multi dtb fit\n");
+	}
 
 	ret = fdtdec_prepare_fdt(gd->fdt_blob);
 	if (!ret)
