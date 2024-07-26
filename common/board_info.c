@@ -33,8 +33,10 @@ int __weak show_board_info(void)
 			/* This might provide more detail */
 			ret = sysinfo_get(&dev);
 			if (!ret) {
+				printf("debug 1\n");
 				ret = sysinfo_detect(dev);
 				if (!ret) {
+					printf("debug 2\n");
 					ret = sysinfo_get_str(dev,
 						      SYSINFO_ID_BOARD_MODEL,
 						      sizeof(str), str);
@@ -43,10 +45,14 @@ int __weak show_board_info(void)
 		}
 
 		/* Fail back to the main 'model' if available */
-		if (ret)
+		if (ret){
 			model = fdt_getprop(gd->fdt_blob, 0, "model", NULL);
-		else
+			printf("ret is not null \n");
+		}
+		else{
 			model = str;
+			printf("model is str\n");
+		}
 
 		if (model)
 			printf("Model: %s\n", model);
