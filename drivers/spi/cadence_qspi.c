@@ -416,11 +416,17 @@ static int cadence_qspi_rx_dll_tuning(struct spi_slave *spi, const struct spi_me
 			if (windowsize > max_windowsize) {
 				dummy_flag = extra_dummy;
 				max_windowsize = windowsize;
-				if (priv->dll_mode == CQSPI_DLL_MODE_MASTER)
+				if (priv->dll_mode == CQSPI_DLL_MODE_MASTER){
+					printf("dll_mode = CQSPI_DLL_MODE_MASTER\n");
 					avg_rxtap = (max_index + min_index);
-				else
+				}
+				else{
+					printf("dll_mode is %d\n", priv->dll_mode);
 					avg_rxtap = (max_rxtap + min_rxtap);
+				}
 				avg_rxtap /= 2;
+				printf("windowsize is %d, dummy_flag is %d, avg_rxtap is %d\n", 
+				       windowsize, dummy_flag, avg_rxtap);
 			}
 
 			if (windowsize >= 3)
@@ -439,8 +445,10 @@ static int cadence_qspi_rx_dll_tuning(struct spi_slave *spi, const struct spi_me
 	if (!dummy_flag)
 		priv->extra_dummy = false;
 
-	if (max_windowsize < 3)
+	if (max_windowsize < 3){
+		printf("max_window_size is %d", max_windowsize);
 		return -EINVAL;
+	}
 
 	return avg_rxtap;
 }
@@ -498,9 +506,11 @@ static int cadence_spi_setdlldelay(struct spi_slave *spi, const struct spi_mem_o
 		if (extra_dummy)
 			priv->extra_dummy = true;
 
+		printf("extra_dummy is %d\n", extra_dummy);
+
 		rxtap = cadence_qspi_rx_dll_tuning(spi, op, txtap, extra_dummy);
 		if (extra_dummy && rxtap < 0) {
-			printf("Failed RX dll tuning\n");
+			printf("Failed RX dll tuning, rxtap is %d\n", rxtap);
 			return rxtap;
 		}
 	}
@@ -577,6 +587,8 @@ static int cadence_spi_setup_ddrmode(struct spi_slave *spi, const struct spi_mem
 	struct udevice *bus = spi->dev->parent;
 	struct cadence_spi_priv *priv = dev_get_priv(bus);
 	int ret;
+
+	printf("cadence_spi_setup_ddrmode called\n", ret);
 
 	if (priv->ddr_init)
 		return 0;
