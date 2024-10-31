@@ -340,6 +340,7 @@ static int cadence_qspi_rx_dll_tuning(struct spi_slave *spi, const struct spi_me
 		return 0;
 
 	max_tap = CQSPI_MAX_DLL_TAPS;
+	printf("CQSPI_MAX_DLL_TAPS/max_tap is %d\n", CQSPI_MAX_DLL_TAPS);
 	/*
 	 * Rx dll tuning is done by setting tx delay and increment rx
 	 * delay and check for correct flash id's by reading from flash.
@@ -377,14 +378,19 @@ static int cadence_qspi_rx_dll_tuning(struct spi_slave *spi, const struct spi_me
 		}
 
 		id_matched = true;
+		printf("set id_matched = true\n");
 		for (j = 0; j < op->data.nbytes; j++) {
 			if (spi->device_id[j] != id[j]) {
 				id_matched = false;
+				printf("set id_matched = false\n");
 				break;
 			}
 		}
 
+		
+
 		if (id_matched && !rxtapfound) {
+			printf("break1\n");
 			if (priv->dll_mode == CQSPI_DLL_MODE_MASTER) {
 				min_rxtap =
 				readl(regbase + CQSPI_REG_DLL_OBSVBLE_UPPER) &
@@ -400,6 +406,7 @@ static int cadence_qspi_rx_dll_tuning(struct spi_slave *spi, const struct spi_me
 		}
 
 		if (id_matched && rxtapfound) {
+			printf("break2\n");
 			if (priv->dll_mode == CQSPI_DLL_MODE_MASTER) {
 				max_rxtap =
 					readl(regbase +
@@ -412,6 +419,8 @@ static int cadence_qspi_rx_dll_tuning(struct spi_slave *spi, const struct spi_me
 		}
 
 		if ((!id_matched || i == max_tap) && rxtapfound) {
+			printf("max_rxtap %d, min_rxtap%d\n", max_rxtap, min_rxtap);
+
 			windowsize = max_rxtap - min_rxtap + 1;
 			if (windowsize > max_windowsize) {
 				dummy_flag = extra_dummy;
@@ -446,7 +455,7 @@ static int cadence_qspi_rx_dll_tuning(struct spi_slave *spi, const struct spi_me
 		priv->extra_dummy = false;
 
 	if (max_windowsize < 3){
-		printf("max_window_size is %d", max_windowsize);
+		printf("max_windowsize is %d\n", max_windowsize);
 		return -EINVAL;
 	}
 
