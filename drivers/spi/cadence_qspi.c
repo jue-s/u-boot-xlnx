@@ -379,10 +379,13 @@ static int cadence_qspi_rx_dll_tuning(struct spi_slave *spi, const struct spi_me
 
 		id_matched = true;
 		printf("set id_matched = true\n");
+		printf("op->data.nbytes is %d\n", op->data.nbytes); 
 		for (j = 0; j < op->data.nbytes; j++) {
 			if (spi->device_id[j] != id[j]) {
 				id_matched = false;
-				printf("set id_matched = false spi->device_id[j] is %d and  id[j] is %d\n", spi->device_id[j], id[j]);
+				printf("set id_matched = false spi->device_id[%d] is %d and  id[%d] is %d\n", j, spi->device_id[j], j, id[j]);
+
+
 				break;
 			}
 		}
