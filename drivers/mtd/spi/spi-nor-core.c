@@ -1562,12 +1562,15 @@ static const struct flash_info *spi_nor_read_id(struct spi_nor *nor)
 		return ERR_PTR(tmp);
 	}
 
+	printf("1read JEDEC id bytes: %02x, %02x, %02x\n",
+	       id[0], id[1], id[2]);
+
 	info = spi_nor_ids;
 	for (; info->name; info++) {
 		if (info->id_len) {
 			if ((!memcmp(info->id, id, info->id_len)) &&
 			    memcpy(nor->spi->device_id, id, SPI_NOR_MAX_ID_LEN)) {
-				printf("read JEDEC id bytes: %02x, %02x, %02x\n",
+				printf("2read JEDEC id bytes: %02x, %02x, %02x\n",
 					id[0], id[1], id[2]);
 				return info;
 			}

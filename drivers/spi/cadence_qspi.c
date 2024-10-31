@@ -380,6 +380,8 @@ static int cadence_qspi_rx_dll_tuning(struct spi_slave *spi, const struct spi_me
 		id_matched = true;
 		printf("set id_matched = true\n");
 		printf("op->data.nbytes is %d\n", op->data.nbytes); 
+		printf("spi->device_id: %0x2, %0x2, %0x2, %0x2, %0x2, %0x2\n", spi->device_id[0], spi->device_id[1], spi->device_id[2], spi->device_id[3], spi->device_id[4], spi->device_id[5]);
+		printf("id: %0x2, %0x2, %0x2, %0x2, %0x2, %0x2\n", id[0], id[1], id[2], id[3], id[4], id[5]);
 		for (j = 0; j < op->data.nbytes; j++) {
 			if (spi->device_id[j] != id[j]) {
 				id_matched = false;
@@ -680,6 +682,7 @@ static int cadence_spi_mem_exec_op(struct spi_slave *spi,
 	else
 		priv->cs = CQSPI_CS0;
 
+	printf("op->data.buf.in here is %d\n", op->data.buf.in);
 	/* Set Chip select */
 	cadence_qspi_apb_chipselect(base, priv->cs, priv->is_decoded_cs);
 
