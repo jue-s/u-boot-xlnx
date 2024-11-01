@@ -602,7 +602,7 @@ static int cadence_spi_setup_ddrmode(struct spi_slave *spi, const struct spi_mem
 	struct cadence_spi_priv *priv = dev_get_priv(bus);
 	int ret;
 
-	printf("cadence_spi_setup_ddrmode called\n", ret);
+	//printf("cadence_spi_setup_ddrmode called\n", ret);
 
 	if (priv->ddr_init)
 		return 0;
@@ -682,7 +682,7 @@ static int cadence_spi_mem_exec_op(struct spi_slave *spi,
 	else
 		priv->cs = CQSPI_CS0;
 
-	printf("op->data.buf.in here is %d\n", op->data.buf.in);
+	//printf("op->data.buf.in here is %d\n", op->data.buf.in);
 	/* Set Chip select */
 	cadence_qspi_apb_chipselect(base, priv->cs, priv->is_decoded_cs);
 
